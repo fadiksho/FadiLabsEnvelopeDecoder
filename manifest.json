@@ -1,0 +1,21 @@
+{
+  "name": "FadiLabs Envelope Decoder",
+  "short_name": "Envelope Decoder",
+  "description": "Decode nested JSON envelopes and pretty-print the Body field in real time.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#020407",
+  "theme_color": "#020407",
+  "icons": [
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

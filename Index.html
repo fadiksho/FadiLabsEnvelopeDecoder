@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="author" content="FadiLabs" />
+  <meta name="description"
+    content="FadiLabs Envelope Decoder — decode nested JSON envelopes and pretty-print the Body field in real time. Paste an object and see the decoded or pretty-printed JSON instantly." />
+  <meta name="keywords" content="FadiLabs, Envelope Decoder, JSON, decoder, pretty-print, JSON viewer, GitHub Pages" />
+  <meta name="robots" content="index,follow" />
+  <meta name="theme-color" content="#020407" />
+  <meta property="og:title" content="FadiLabs Envelope Decoder" />
+  <meta property="og:description"
+    content="Decode nested JSON envelopes and pretty-print the Body field. Paste an object and see decoded JSON in real time." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="FadiLabs" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="FadiLabs Envelope Decoder" />
+  <meta name="twitter:description" content="Decode nested JSON envelopes and pretty-print the Body field." />
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/icons/icon-192.svg" sizes="192x192" />
+  <link rel="icon" href="/icons/icon-512.svg" sizes="512x512" />
+  <title>FadiLabs Envelope Decoder</title>
+  <link rel="stylesheet" href="/styles/tailwind.min.css" />
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
+  <style>
+    /* Dark mistery glass theme + JSON highlight */
+    html, body {
+      min-height: 100%;
+      background: linear-gradient(180deg, #000, #0f1724, #030712) no-repeat fixed;
+      background-attachment: fixed;
+      background-size: cover;
+    }
+
+    .glass {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      box-shadow: 0 10px 30px rgba(2, 6, 23, 0.7);
+    }
+
+    pre {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+      border-radius: 0.5rem;
+    }
+
+    .json-key {
+      color: #7dd3fc;
+      text-shadow: 0 0 10px rgba(99, 102, 241, 0.08);
+    }
+
+    .json-string {
+      color: #86efac;
+      text-shadow: 0 0 8px rgba(34, 197, 94, 0.06);
+    }
+
+    .json-number {
+      color: #facc15;
+    }
+
+    .json-boolean {
+      color: #fb7185;
+    }
+
+    .json-null {
+      color: #9ca3af;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen font-sans text-gray-100 bg-gradient-to-b from-black via-slate-900 to-[#030712]">
+  <div class="max-w-7xl mx-auto p-6">
+    <div class="glass rounded-xl p-6 backdrop-blur-md">
+      <h1
+        class="text-3xl text-center font-semibold text-transparent italic mb-4 bg-gradient-to-r from-blue-200 via-indigo-700 to-fuchsia-300 bg-clip-text">
+        FadiLabs Envelope Decoder
+      </h1>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-indigo-200 mb-2">Paste object here</label>
+          <textarea id="input" spellcheck="false"
+            class="w-full h-[70vh] p-4 rounded-lg shadow-sm font-mono text-sm resize-none bg-white/5 bg-clip-padding backdrop-blur-sm border border-white/10 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400"></textarea>
+          <p id="status" class="mt-2 text-sm text-gray-300"></p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-indigo-200 mb-2">Decoded (pretty, auto-updates)</label>
+          <pre id="output"
+            class="w-full h-[70vh] p-4 rounded-lg shadow-lg font-mono text-sm bg-black/30 border border-white/6 overflow-auto"><code class="block whitespace-pre text-sm"></code></pre>
+        </div>
+      </div>
+
+      <footer class="mt-6 text-sm text-gray-400">Tip: Paste the JSON on the left and the right pane will show the
+        decoded <code class="font-mono">Body</code> field (or pretty-print the input if no Body found), updated as you
+        type.</footer>
+    </div>
+  </div>
+
+  <div class="fixed bottom-2 left-1/2 transform -translate-x-1/2 z-50 w-full" aria-hidden="false">
+    <div
+      class="bg-white/4 backdrop-blur-md border border-white/6 text-xs text-gray-200 px-3 mx-4 py-1 rounded-full shadow-md flex items-center gap-2 justify-self-center flex-wrap justify-center">
+      <span class="text-nowrap">Built with <span class="text-red-400" aria-hidden="true">❤️</span> by <strong>GitHub
+          Copilot</strong></span>
+      <span class="text-nowrap">Hosted on <strong>GitHub Pages</strong> <span class="text-red-400"
+          aria-hidden="true">❤️</span></span>
+    </div>
+  </div>
+
+  <script>
+
+    const input = document.getElementById('input');
+    const output = document.getElementById('output');
+    const status = document.getElementById('status');
+
+    input.value = '';
+
+    function tryParseRecursive(value, maxDepth = 5) {
+      let cur = value;
+      let depth = 0;
+      while (typeof cur === 'string' && depth < maxDepth) {
+        try {
+          const parsed = JSON.parse(cur);
+          cur = parsed;
+          depth++;
+        } catch (e) {
+          break;
+        }
+      }
+      return cur;
+    }
+
+    function escapeHtml(unsafe) {
+      return unsafe.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function syntaxHighlight(json) {
+      if (typeof json !== 'string') json = JSON.stringify(json, null, 2);
+      json = escapeHtml(json);
+      return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)/g, function (match) {
+        let cls = 'json-number';
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) cls = 'json-key';
+          else cls = 'json-string';
+        } else if (/true|false/.test(match)) cls = 'json-boolean';
+        else if (/null/.test(match)) cls = 'json-null';
+        return '<span class="' + cls + '">' + match + '</span>';
+      });
+    }
+
+    function setOutputFromObject(obj) {
+      const html = syntaxHighlight(obj);
+      output.innerHTML = `<code class="block whitespace-pre text-sm">${html}</code>`;
+    }
+
+    function setRawOutput(text) {
+      output.innerHTML = `<code class="block whitespace-pre text-sm text-gray-300">${escapeHtml(text)}</code>`;
+    }
+
+    function decodeInput(text) {
+      status.textContent = '';
+      if (!text.trim()) {
+        output.innerHTML = '';
+        return;
+      }
+
+      try {
+        const outer = JSON.parse(text);
+
+        if (typeof outer.Body === 'string') {
+          let bodyStr = outer.Body;
+
+          try {
+            const unq = JSON.parse(`"${bodyStr.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`);
+            try {
+              const parsedInner = tryParseRecursive(unq, 5);
+              if (typeof parsedInner === 'object') {
+                setOutputFromObject(parsedInner);
+                status.textContent = 'Decoded Body JSON ✅';
+                return;
+              }
+            } catch (e) { }
+          } catch (e) { }
+
+          try {
+            const parsedInner = tryParseRecursive(bodyStr, 5);
+            if (typeof parsedInner === 'object') {
+              setOutputFromObject(parsedInner);
+              status.textContent = 'Decoded Body JSON ✅';
+              return;
+            }
+          } catch (e) { }
+
+          const unescaped = bodyStr.replace(/\\u0022/g, '"').replace(/\\u005C/g, '\\');
+          setRawOutput(unescaped);
+          status.textContent = 'Body found but could not be parsed — showing unescaped text ⚠️';
+          return;
+        }
+
+        setOutputFromObject(outer);
+        status.textContent = 'Parsed JSON (no Body) ✅';
+        return;
+      } catch (e) {
+        const m = text.match(/"Body"\s*:\s*"([\s\S]*?)"\s*[,}]/);
+        if (m) {
+          const bodyRaw = m[1];
+          const unescaped = bodyRaw.replace(/\\u0022/g, '"').replace(/\\\"/g, '"').replace(/\\\\/g, '\\');
+          try {
+            const parsedInner = tryParseRecursive(unescaped, 5);
+            if (typeof parsedInner === 'object') {
+              setOutputFromObject(parsedInner);
+              status.textContent = 'Extracted and decoded Body ✅';
+              return;
+            }
+          } catch (ee) { }
+
+          setRawOutput(unescaped);
+          status.textContent = 'Extracted Body (not valid JSON) ⚠️';
+          return;
+        }
+
+        output.innerHTML = '';
+        status.textContent = 'Input is not valid JSON — paste a JSON object with a Body field or a plain JSON to pretty-print.';
+      }
+    }
+
+    let timer = null;
+    input.addEventListener('input', () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => decodeInput(input.value), 200);
+    });
+
+    // Initial decode
+    decodeInput(input.value);
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('Service Worker registered:', reg))
+          .catch(err => console.warn('Service Worker registration failed:', err));
+      });
+    }
+  </script>
+</body>
+
+</html>

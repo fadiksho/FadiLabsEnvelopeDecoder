@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="64" fill="#0b1220" />
+  <g transform="translate(120,120) scale(2.0)" fill="none" stroke="#7dd3fc" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="0" y="8" width="120" height="80" rx="8" />
+    <path d="M0 8 L60 52 L120 8" />
+  </g>
+  <text x="256" y="476" fill="#86efac" font-family="monospace" font-size="32" text-anchor="middle">FadiLabs</text>
+</svg>

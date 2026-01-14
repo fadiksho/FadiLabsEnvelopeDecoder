@@ -1,0 +1,109 @@
+/* Lightweight fallback stylesheet that replaces the Tailwind CDN for this small app.
+   It purposefully includes only the utilities used by the page so the page keeps its layout
+   while removing production CDN usage and the console warning.
+
+   For full Tailwind support and tree-shaken production builds, follow the steps in README.md. */
+
+:root{--bg:#020407;--muted:#9ca3af;--accent:#7dd3fc;--accent-2:#86efac;--indigo:#6366f1}
+*{box-sizing:border-box}
+html,body{min-height:100%;height:auto}
+body{min-height:100vh;background:linear-gradient(180deg,#000,#0f1724,#030712) no-repeat fixed;background-attachment:fixed;background-size:cover;margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; color:#e6eef6}
+
+/* containers */
+.max-w-6xl{max-width:72rem;margin-left:auto;margin-right:auto}
+.max-w-7xl{max-width:80rem;margin-left:auto;margin-right:auto}
+.mx-auto{margin-left:auto;margin-right:auto}
+.p-6{padding:1.5rem}
+
+/* glass element handled by existing .glass rules */
+
+/* typography */
+.text-3xl{font-size:1.875rem;line-height:2.25rem}
+.text-center{text-align:center}
+.font-semibold{font-weight:600}
+.text-transparent{color:transparent}
+.italic{font-style:italic}
+.mb-4{margin-bottom:1rem}
+
+/* layout */
+.grid{display:grid}
+.grid-cols-1{grid-template-columns:1fr}
+@media(min-width:768px){.md\:grid-cols-2{grid-template-columns:repeat(2,1fr)}}
+.gap-4{gap:1rem}
+
+/* forms */
+.block{display:block}
+.text-sm{font-size:.875rem;line-height:1.25rem}
+.font-medium{font-weight:500}
+.mb-2{margin-bottom:.5rem}
+.w-full{width:100%}
+.h-\[70vh\]{height:70vh}
+.p-4{padding:1rem}
+.rounded-lg{border-radius:.5rem}
+.shadow-sm{box-shadow:0 1px 2px rgba(2,6,23,0.6)}
+.font-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace}
+.text-gray-100{color:#e6eef6}
+.resize-none{resize:none}
+.bg-white\/5{background-color:rgba(255,255,255,.05)}
+.bg-clip-padding{background-clip:padding-box}
+.backdrop-blur-sm{-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.border{border-style:solid}
+.border-white\/10{border-color:rgba(255,255,255,.1)}
+.placeholder-gray-400::placeholder{color:#9ca3af}
+.focus\:outline-none:focus{outline:0}
+.focus\:ring-2:focus{box-shadow:0 0 0 2px rgba(99,102,241,.2)}
+.focus\:ring-indigo-400:focus{box-shadow:0 0 0 2px rgba(99,102,241,.35)}
+
+/* pre output styling */
+.shadow-lg{box-shadow:0 10px 30px rgba(2,6,23,.7)}
+.bg-black\/30{background-color:rgba(0,0,0,.3)}
+.border-white\/6{border-color:rgba(255,255,255,.06)}
+.overflow-auto{overflow:auto}
+.text-gray-300{color:#cbd5e1}
+
+/* small utility */
+.text-indigo-200{color:#c7d2fe}
+.text-gray-400{color:#9ca3af}
+
+/* simple responsive spacing */
+.mt-6{margin-top:1.5rem}
+
+/* small badge */
+.fixed{position:fixed}
+.bottom-4{bottom:1rem}
+.bottom-2{bottom:0.5rem}
+.left-1\/2{left:50%}
+.transform{transform:translateX(0)}
+.-translate-x-1\/2{transform:translateX(-50%)}
+.z-50{z-index:50}
+.w-full{width:100%}
+.mx-4{margin-left:1rem;margin-right:1rem}
+.px-3{padding-left:.75rem;padding-right:.75rem}
+.py-1{padding-top:.25rem;padding-bottom:.25rem}
+.rounded-full{border-radius:9999px}
+.text-xs{font-size:.75rem}
+.text-red-400{color:#fb7185}
+.text-gray-200{color:#e5e7eb}
+.opacity-70{opacity:.7}
+.flex{display:flex}
+.items-center{align-items:center}
+.flex-wrap{flex-wrap:wrap}
+.gap-3{gap:.75rem}
+.gap-2{gap:.5rem}
+.justify-self-center{justify-self:center}
+.justify-center{justify-content:center}
+.text-nowrap{white-space:nowrap}
+.backdrop-blur-md{-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+
+/* small gradients used by header */
+.bg-clip-text{background-clip:text;-webkit-background-clip:text}
+.bg-gradient-to-r{background-image:linear-gradient(90deg,#bae6fd,#6366f1,#f0abfc)}
+.from-blue-200{ }
+.via-indigo-700{ }
+.to-fuchsia-300{ }
+
+/* fallback for monospace code appearance */
+code,pre{font-family:ui-monospace,Menlo,Monaco,monospace}
+
+/* make sure inputs and pre use same text color */
+textarea,pre{color:inherit}

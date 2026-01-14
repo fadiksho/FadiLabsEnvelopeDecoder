@@ -1,11 +1,11 @@
 const CACHE_NAME = 'fadilabs-envelope-decoder-v1';
 const OFFLINE_URLS = [
-  '/',
-  '/Index.html',
-  '/manifest.json',
-  '/styles/tailwind.min.css',
-  '/icons/icon-192.svg',
-  '/icons/icon-512.svg'
+  './',
+  'index.html',
+  'manifest.json',
+  'styles/tailwind.min.css',
+  'icons/icon-192.svg',
+  'icons/icon-512.svg'
 ];
 
 self.addEventListener('install', event => {
